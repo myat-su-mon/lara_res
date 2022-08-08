@@ -26,5 +26,4 @@ Auth::routes([
     'confirm' => false,
 ]);
 
-Route::get('/order', [OrderController::class, 'index'])->name('order');
 Route::resource('/dish', DishesController::class);

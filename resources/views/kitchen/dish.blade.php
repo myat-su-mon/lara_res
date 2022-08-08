@@ -21,19 +21,43 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Datatable</h3>
+                            <h3 class="card-title">Dishes</h3>
+                            <a href="/dish/create" class="btn btn-success float-right">Create</a>
                         </div>
                         <div class="card-body">
+                            @if (session('message'))
+                                <div class="alert alert-success">
+                                    {{ session('message') }}
+                                </div>
+                            @endif
                             <table id="dishes" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
+                                        <th>Dish Name</th>
+                                        <th>Category Name</th>
+                                        <th>Created</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    @foreach($dishes as $dish)
+                                        <tr>
+                                            <td>{{$dish->name}}</td>
+                                            <td>{{$dish->category->name}}</td>
+                                            <td>{{$dish->created_at}}</td>
+                                            <td>
+                                                <div class="form-row">
+                                                    <a style="height:40px; margin-right:10px;" href="/dish/{{$dish->id}}/edit" class="btn btn-warning">Edit</a>
+                                                    <form action="/dish/{{$dish->id}}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" onclick="return confirm('Are you sure you want to delete this item?');" class="btn btn-danger">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -45,12 +69,13 @@
     <!-- /.content -->
 </div>
 @endsection
+<script src="plugins/jquery/jquery.min.js"></script>
 <script>
 $(function() {
-    $('dishes').DataTable({
+    $('#dishes').DataTable({
         "paging": true,
+        "pageLength": 10,
         "lengthChange": false,
-        "searching": false,
         "ordering": true,
         "info": true,
         "autoWidth": true
