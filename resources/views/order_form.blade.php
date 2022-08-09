@@ -21,6 +21,11 @@
 <body>
     <div class="card">
         <div class="card-body">
+            @if (session('message'))
+            <div class="alert alert-success">
+                {{ session('message') }}
+            </div>
+        @endif
             <div class="row">
                 <div class="col-12">
                     <h3>Order Form</h3>
@@ -55,8 +60,8 @@
                                                 <div class="col-sm-3">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <img src="{{ url('/images/' . $dish->image) }}" width="160"
-                                                                height="150"><br>
+                                                            <img src="{{ url('/images/' . $dish->image) }}"
+                                                                width="160" height="150"><br>
                                                             <label>{{ $dish->name }}</label><br>
                                                             <input type="number" name="{{ $dish->id }}"><br>
                                                         </div>
@@ -89,14 +94,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($orders as $order)
+                                            @foreach ($orders as $order)
                                                 <tr>
-                                                    <td>{{$order->order_id}}</td>
-                                                    <td>{{$order->dish->name}}</td>
-                                                    <td>{{$order->table_id}}</td>
-                                                    <td>{{$status[$order->status]}}</td>
+                                                    <td>{{ $order->order_id }}</td>
+                                                    <td>{{ $order->dish->name }}</td>
+                                                    <td>{{ $order->table_id }}</td>
+                                                    <td>{{ $status[$order->status] }}</td>
                                                     <td>
-                                                        <a href="/order/{{$order->id}}/serve" class="btn btn-success">Serve</a>
+                                                        <a href="/order/{{ $order->id }}/serve"
+                                                            class="btn btn-success">Serve</a>
                                                     </td>
                                                 </tr>
                                             @endforeach
